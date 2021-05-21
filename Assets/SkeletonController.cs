@@ -29,39 +29,6 @@ public class SkeletonController : MonoBehaviour
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
-        Debug.Log(Test001(70));
-    }
-
-    string Test001(int i)
-    {  
-        if (i == 100)
-        {
-            return "A+";
-        }
-        else if (i >= 90 && i < 100)
-        {
-            return "A";
-        }
-        else if (i >= 80 && i < 90)
-        {
-            return "B";
-        }
-        else if (i >= 70 && i < 80)
-        {
-            return "C";
-        }
-        else if (i >= 60 && i < 70)
-        {
-            return "D";
-        }
-        else if (i < 60)
-        {
-            return "E";
-        }
-        else 
-        {
-            return "null";
-        }
     }
 
     // Update is called once per frame
