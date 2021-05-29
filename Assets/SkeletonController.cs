@@ -19,7 +19,7 @@ public class SkeletonController : MonoBehaviour
     // 0: 可以移動
     // 1: 攻擊狀態
     // 2: 被攻擊中
-    public int status = 0;
+    int status = 0;
     Animator anim;//動畫控制
     // skeletonstatus skeletonstatus;
     NavMeshAgent navMeshAgent;//導航控制
@@ -69,6 +69,27 @@ public class SkeletonController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) 
     {
+        Debug.Log("OTHER:" + other.tag);
+        if(other.tag == "Attack");
+        {
         Debug.Log("被盾打到");
+        anim.SetTrigger("Damage");
+        }
+    }
+
+    void DamageEnd()
+    {   
+        anim.SetBool("Attack",false);
+        anim.SetFloat("Run",0);
+        Debug.Log("僵直結束");
+        Invoke("ResetStatus",1);
+    }
+
+    //reset
+    
+    void ResetStatus()
+    {
+        Debug.Log("校正回歸");
+        status = 0;
     }
 }
