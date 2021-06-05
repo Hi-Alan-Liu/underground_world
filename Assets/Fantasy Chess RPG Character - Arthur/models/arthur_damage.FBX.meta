@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a13371e27a0a44046b821f3ba374ca01
+guid: db777a349b29a3b41ad5916f079bf94a
 ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable:
@@ -830,7 +830,7 @@ ModelImporter:
     second: omniknight
   - first:
       74: 7400000
-    second: arthur_dead_01
+    second: arthur_damage_01
   - first:
       95: 9500000
     second: //RootNode
@@ -869,11 +869,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: arthur_dead_01
+      name: arthur_damage_01
       takeName: Take 001
       internalID: 0
       firstFrame: 0
-      lastFrame: 64
+      lastFrame: 30
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

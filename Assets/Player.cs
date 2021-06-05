@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -16,9 +17,18 @@ public class Player : MonoBehaviour
     // 0: 可以移動
     // 1: 攻擊狀態
     // 2: 被攻擊中
+    // 3: 角色死亡
     public int status = 0;
 
-
+    //血量與魔力
+    public GameObject healthBar;
+    public GameObject manaBar;
+    public float health = 100;
+    public float mana = 100;
+    public float healthmax = 100;
+    public float manamax = 100;
+    public GameObject healthText;
+    public GameObject manaText;
 
 
     // Start is called before the first frame update
@@ -33,6 +43,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         Move ();
+        checkHealthBar ();
     }
 
     void Move ()
@@ -91,14 +102,34 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) 
     {
-        Debug.Log("測試碰撞");
         if(other.tag == "Attack01")
         {
-        Debug.Log("被怪物攻擊");
-        anim.SetTrigger("Dead");
+            Damage();
         }
     }
 
+    void Damage()
+    {
+        if(status == 2 || status == 3)
+            return;
+
+        health -= 80;
+        if (health <= 0 && status != 3) 
+        {
+            status = 3;
+            anim.SetTrigger("Dead");
+            return;
+        }
+
+        anim.SetTrigger("Damage");
+    }
+
+    void checkHealthBar()
+    {
+        healthText.GetComponent<Text>().text = health + "/" + healthmax;
+        healthBar.GetComponent<Transform>().localPosition = new Vector3( - 175 + ((175 / healthmax)* health), 0f, 0f);
+
+    }
     void DeadEnd()
     {   
         anim.SetBool("Attack",false);
@@ -109,7 +140,6 @@ public class Player : MonoBehaviour
 
     void ResetStatus()
     {
-        Debug.Log("玩家校正回歸");
         status = 0;
     }
 

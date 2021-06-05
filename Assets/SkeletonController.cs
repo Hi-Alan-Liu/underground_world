@@ -21,10 +21,8 @@ public class SkeletonController : MonoBehaviour
     // 2: 被攻擊中
     int status = 0;
     Animator anim;//動畫控制
-    // skeletonstatus skeletonstatus;
     NavMeshAgent navMeshAgent;//導航控制
 
-    // Start is called before the first frame update
     void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -62,7 +60,7 @@ public class SkeletonController : MonoBehaviour
 
     void AttackEnd()
     {
-        Debug.Log("攻擊結束");
+
         anim.SetBool("Attack", false);
         status = 0;
     }
@@ -72,7 +70,6 @@ public class SkeletonController : MonoBehaviour
         Debug.Log("OTHER:" + other.tag);
         if(other.tag == "Attack")
         {
-        Debug.Log("被盾打到");
         anim.SetTrigger("Damage");
         }
     }
