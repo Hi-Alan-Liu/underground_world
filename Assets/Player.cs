@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Player : MonoBehaviour
 {
@@ -91,5 +92,25 @@ public class Player : MonoBehaviour
     private void OnTriggerEnter(Collider other) 
     {
         Debug.Log("測試碰撞");
+        if(other.tag == "Attack01")
+        {
+        Debug.Log("被怪物攻擊");
+        anim.SetTrigger("Dead");
+        }
     }
+
+    void DeadEnd()
+    {   
+        anim.SetBool("Attack",false);
+        anim.SetFloat("Speed",0);
+        Debug.Log("玩家僵直結束");
+        Invoke("ResetStatus",1);
+    }
+
+    void ResetStatus()
+    {
+        Debug.Log("玩家校正回歸");
+        status = 0;
+    }
+
 }

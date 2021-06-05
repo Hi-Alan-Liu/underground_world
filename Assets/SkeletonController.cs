@@ -70,7 +70,7 @@ public class SkeletonController : MonoBehaviour
     private void OnTriggerEnter(Collider other) 
     {
         Debug.Log("OTHER:" + other.tag);
-        if(other.tag == "Attack");
+        if(other.tag == "Attack")
         {
         Debug.Log("被盾打到");
         anim.SetTrigger("Damage");
