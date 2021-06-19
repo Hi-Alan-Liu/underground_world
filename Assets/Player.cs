@@ -43,7 +43,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         Move ();
-        checkHealthBar ();
+        CheckHealthBar ();
     }
 
     void Move ()
@@ -124,7 +124,7 @@ public class Player : MonoBehaviour
         anim.SetTrigger("Damage");
     }
 
-    void checkHealthBar()
+    void CheckHealthBar()
     {
         healthText.GetComponent<Text>().text = health + "/" + healthmax;
         healthBar.GetComponent<Transform>().localPosition = new Vector3( - 175 + ((175 / healthmax)* health), 0f, 0f);

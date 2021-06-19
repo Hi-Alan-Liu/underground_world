@@ -23,6 +23,11 @@ public class SkeletonController : MonoBehaviour
     Animator anim;//動畫控制
     NavMeshAgent navMeshAgent;//導航控制
 
+    //血量
+    public GameObject healthBar;
+    public float health = 100;
+    public float healthmax = 100;
+
     void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -56,6 +61,8 @@ public class SkeletonController : MonoBehaviour
             status = 1;
         }
 
+        // 偵測血量
+        CheckHealthBar();
     } 
 
     void AttackEnd()
@@ -70,10 +77,33 @@ public class SkeletonController : MonoBehaviour
         Debug.Log("OTHER:" + other.tag);
         if(other.tag == "Attack")
         {
-        anim.SetTrigger("Damage");
+            // 觸發受傷事件
+            Damage();
         }
-    }
+    }  
 
+    //受傷事件
+    void Damage()
+    {
+        // 如果狀態違背攻擊中 則不往下做
+        // if (status == 2)
+        //     return;
+    
+
+        health -= 40;
+        if (health < 0 && status != 3)
+        {
+            status = 3;
+            anim.SetTrigger("Dead");
+            return;
+        }
+
+        anim.SetTrigger("Damage");
+    }
+    void CheckHealthBar()
+    {
+        healthBar.GetComponent<Transform>().localPosition = new Vector3( - 3 + ((3 / healthmax)* health), 0f, 0f);
+    }
     void DamageEnd()
     {   
         anim.SetBool("Attack",false);
