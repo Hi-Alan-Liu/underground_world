@@ -113,7 +113,7 @@ public class Player : MonoBehaviour
         if(status == 2 || status == 3)
             return;
 
-        health -= 80;
+        health -= 10;
         if (health <= 0 && status != 3) 
         {
             status = 3;
