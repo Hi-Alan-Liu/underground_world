@@ -42,12 +42,6 @@ public class SkeletonController : MonoBehaviour
     {
         // 偵測血量
         CheckHealthBar();
-        dist = Vector3.Distance(player.transform.position, transform.position); //計算主角與怪物距離 *print("與其他對象的距離 ;"+ dist);
-        if(dist<35)
-        {
-            anim.SetTrigger("Skill");
-            skeletonstatus = skeletonstatus.ATTACK;
-        }
 
         switch (skeletonStatus)
         {
