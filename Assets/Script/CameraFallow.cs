@@ -43,7 +43,7 @@ public class CameraFallow : MonoBehaviour
 
         rotX = Mathf.Clamp ( rotX, -clampAngle, clampAngle); // 數學題
 
-        Debug.Log(rotX);
+        // Debug.Log(rotX);
 
         Quaternion localRotation = Quaternion.Euler(rotX, rotY, 0.0f);
         transform.rotation = localRotation;

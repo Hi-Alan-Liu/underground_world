@@ -3,25 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-// enum skeletonstatus
-// {
-//     ATTACK,
-//     DAMAGE,
-//     RUN
-// }
+enum skeletonStatus
+{
+    IDEL = 0, // 待機
+    WALK = 1, // 遊走
+    ATTACK = 2, // 當進入視線範圍時 怒吼 | 當進入攻擊範圍時 追擊+攻擊
+    RESET = 3, // 血量回復 + 走回起始點
+    Death = 4 // 死亡
+}
 
 public class SkeletonController : MonoBehaviour
 {
+    skeletonStatus skeletonStatus; // 怪物狀態
+    public GameObject player; // 主角
+    public float speed; // 移動速度
 
-    public GameObject Player;
-    public float speed;
-
-    // 0: 可以移動
-    // 1: 攻擊狀態
-    // 2: 被攻擊中
-    int status = 0;
-    Animator anim;//動畫控制
-    NavMeshAgent navMeshAgent;//導航控制
+    // 是否攻擊
+    bool attack = false;
+    Animator anim;// 動畫控制
+    NavMeshAgent navMeshAgent;// 導航控制
 
     //血量
     public GameObject healthBar;
@@ -40,15 +40,32 @@ public class SkeletonController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-                // 偵測血量
+        // 偵測血量
         CheckHealthBar();
 
-        float dist = Vector3.Distance(Player.transform.position, transform.position);
+        switch (skeletonStatus)
+        {
+            // 待機事件
+            case skeletonStatus.IDEL:
+                break;
+            // 遊走事件
+            case skeletonStatus.WALK:
+                break;
+            // 攻擊事件
+            case skeletonStatus.ATTACK:
+                AttackEvent();
+                break;
+            // 初始化
+            case skeletonStatus.RESET:
+                break;
+        }
+    } 
+    // 
+    void AttackEvent()
+    {
+        // 計算主角與怪物的距離
+        float dist = Vector3.Distance(player.transform.position, transform.position);
         // print("與其他對象的距離 ;"+ dist);
-
-
-        if (status != 0)
-            return;
 
         // 如果距離大於 XX 不追
         if (dist > 25)
@@ -59,20 +76,19 @@ public class SkeletonController : MonoBehaviour
         else if (dist < 25 && dist > 3)
         {
             anim.SetFloat("Run", 0.4f);
-            navMeshAgent.SetDestination(Player.transform.position);
+            navMeshAgent.SetDestination(player.transform.position);
         }
         else
         {
             anim.SetBool ("Attack", true);
-            status = 1;
+            attack = true;
         }
-    } 
-
+    }
     void AttackEnd()
     {
 
         anim.SetBool("Attack", false);
-        status = 0;
+        attack = false;
     }
 
     private void OnTriggerEnter(Collider other) 
