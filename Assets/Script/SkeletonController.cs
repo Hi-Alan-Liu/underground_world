@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 enum skeletonStatus
 {
-    IDEL = 0, // 待機
+    IDLE = 0, // 待機
     WALK = 1, // 遊走
     ATTACK = 2, // 當進入視線範圍時 怒吼 | 當進入攻擊範圍時 追擊+攻擊
     RESET = 3, // 血量回復 + 走回起始點
@@ -17,9 +17,12 @@ public class SkeletonController : MonoBehaviour
     skeletonStatus skeletonStatus; // 怪物狀態
     public GameObject player; // 主角
     public float speed; // 移動速度
-
+    public Transform initTransform;
+    public Vector3 randomPosition;
     // 是否攻擊
     bool attack = false;
+    bool idle = false;
+    bool walk = false;
     Animator anim;// 動畫控制
     NavMeshAgent navMeshAgent;// 導航控制
 
@@ -31,6 +34,7 @@ public class SkeletonController : MonoBehaviour
     public GameObject blood_FX;
     public GameObject canvas;
     int status = 0;
+    public float dist;//計算怪物與腳色距離
     void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -43,7 +47,8 @@ public class SkeletonController : MonoBehaviour
         // 偵測血量
         CheckHealthBar();
         dist = Vector3.Distance(player.transform.position,transform.position);
-        if(dist<35)
+        if(dist<35 && skeletonStatus != skeletonStatus.ATTACK)
+        //&&= and, ||= or
         {
             anim.SetTrigger("Skill");
             skeletonStatus = skeletonStatus.ATTACK;
@@ -52,10 +57,12 @@ public class SkeletonController : MonoBehaviour
         switch (skeletonStatus)
         {
             // 待機事件
-            case skeletonStatus.IDEL:
+            case skeletonStatus.IDLE:
+                IdleEvent();
                 break;
             // 遊走事件
             case skeletonStatus.WALK:
+                WalkEvet();
                 break;
             // 攻擊事件
             case skeletonStatus.ATTACK:
@@ -63,18 +70,72 @@ public class SkeletonController : MonoBehaviour
                 break;
             // 初始化
             case skeletonStatus.RESET:
+                RestEvent();
                 break;
         }
+        Debug.Log("skeletonStatus:" + skeletonStatus);
     } 
-    // 
+    void IdleEvent()
+    {
+        //站立不動
+        //左右看
+        //進入遊走狀態
+        if(idle)
+            return;
+
+        int RandomNumber = Random.Range(1,4);
+
+        if(RandomNumber >= 3 )
+        {
+            skeletonStatus = skeletonStatus.WALK;
+        }
+        else if (RandomNumber == 2)
+        {
+            anim.SetBool ("Idle",true);
+            idle =true;
+        }
+    
+    }
+    void IdleEnd()
+    {
+        anim.SetBool ("Idle",false);
+        idle = false;
+    }
+    void WalkEvet()
+    {
+        
+        if (walk)
+        {
+            float randomDist = Vector3.Distance(randomPosition, transform.position);
+            if (dist < 1)
+            {
+                walk = false; anim.SetFloat("Walk", 0);
+                skeletonStatus = skeletonStatus.IDLE;
+            }
+            return;
+        }
+        float x =initTransform.position.x + Random.Range(-10.0f,10.0f);
+        float y =transform.position.y;
+        float z =initTransform.position.z + Random.Range(-10.0f,10.0f);
+        randomPosition = new Vector3(x,y,z);
+
+        navMeshAgent.SetDestination(randomPosition);
+        anim.SetFloat("Walk",0.4f);
+        walk =true;
+    }
     void AttackEvent()
     {
-        // 計算主角與怪物的距離
-        float dist = Vector3.Distance(player.transform.position, transform.position);
-        // print("與其他對象的距離 ;"+ dist);
-
-        // 如果距離大於 XX 不追
-        if (dist > 25)
+        //如果怪物距離角色 25 之內開始追擊
+        //怪物距離腳色 35之後進入待機模式
+        //怪物距離角色小於 35 開始進入攻擊狀態
+        if(attack)
+            return;
+        if(dist > 35)
+        {
+            skeletonStatus = skeletonStatus.RESET;//玩家距離太遠,怪物走回初始位置並回復血量
+        }
+        //如果距離大於 XX 不追
+        else if (dist > 25)
         {
             anim.SetFloat("Run", 0);
         } 
@@ -96,10 +157,27 @@ public class SkeletonController : MonoBehaviour
         anim.SetBool("Attack", false);
         attack = false;
     }
+    void RestEvent()
+    {
+        float initDist = Vector3.Distance(initTransform.position, transform.position);//計算怪物與原點位置
+        if(health <=100)
+        {
+            health += 1;//補滿怪物血量
+        }
+        if (initDist <1)
+        {
+            anim.SetFloat("Walk",0);
+            skeletonStatus = skeletonStatus.IDLE;
+        }
+        else
+        {
+            anim.SetFloat("Walk",0.4f);
+            navMeshAgent.SetDestination(initTransform.position);
+        }
+    }
 
     private void OnTriggerEnter(Collider other) 
     {
-        Debug.Log("OTHER:" + other.tag);
         if(other.tag == "Attack")
         {
             // 觸發受傷事件
@@ -148,7 +226,6 @@ public class SkeletonController : MonoBehaviour
     {   
         anim.SetBool("Attack",false);
         anim.SetFloat("Run",0);
-        Debug.Log("僵直結束");
         Invoke("ResetStatus",1);
     }
 
@@ -156,7 +233,6 @@ public class SkeletonController : MonoBehaviour
     
     void ResetStatus()
     {
-        Debug.Log("校正回歸");
         status = 0;
     }
 }
