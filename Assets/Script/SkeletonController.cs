@@ -30,7 +30,7 @@ public class SkeletonController : MonoBehaviour
     
     public GameObject blood_FX;
     public GameObject canvas;
-
+    int status = 0;
     void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -42,6 +42,12 @@ public class SkeletonController : MonoBehaviour
     {
         // 偵測血量
         CheckHealthBar();
+        dist = Vector3.Distance(player.transform.position,transform.position);
+        if(dist<35)
+        {
+            anim.SetTrigger("Skill");
+            skeletonStatus = skeletonStatus.ATTACK;
+        }
 
         switch (skeletonStatus)
         {
