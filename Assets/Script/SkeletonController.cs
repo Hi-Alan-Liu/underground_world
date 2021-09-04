@@ -17,8 +17,8 @@ public class SkeletonController : MonoBehaviour
     skeletonStatus skeletonStatus; // 怪物狀態
     public GameObject player; // 主角
     public float speed; // 移動速度
-    public Transform initTransform;
-    public Vector3 randomPosition;
+    public Vector3 initTransform;
+    Vector3 randomPosition;
     // 是否攻擊
     bool attack = false;
     bool idle = false;
@@ -34,11 +34,13 @@ public class SkeletonController : MonoBehaviour
     public GameObject blood_FX;
     public GameObject canvas;
     int status = 0;
-    public float dist;//計算怪物與腳色距離
+    float dist;//計算怪物與腳色距離
     void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
+        player = GameObject.FindGameObjectWithTag("Player");
+        initTransform = new Vector3(this.transform.position.x,this.transform.position.y,this.transform.position.z);
     }
 
     // Update is called once per frame
@@ -50,6 +52,7 @@ public class SkeletonController : MonoBehaviour
         if(dist<35 && skeletonStatus != skeletonStatus.ATTACK)
         //&&= and, ||= or
         {
+            IdleEvent();
             anim.SetTrigger("Skill");
             skeletonStatus = skeletonStatus.ATTACK;
         }
@@ -73,7 +76,6 @@ public class SkeletonController : MonoBehaviour
                 RestEvent();
                 break;
         }
-        Debug.Log("skeletonStatus:" + skeletonStatus);
     } 
     void IdleEvent()
     {
@@ -107,20 +109,20 @@ public class SkeletonController : MonoBehaviour
         if (walk)
         {
             float randomDist = Vector3.Distance(randomPosition, transform.position);
-            if (dist < 1)
+            if (randomDist < 3)
             {
-                walk = false; anim.SetFloat("Walk", 0);
+                walk = false; anim.SetBool("Walk", false);
                 skeletonStatus = skeletonStatus.IDLE;
             }
             return;
         }
-        float x =initTransform.position.x + Random.Range(-10.0f,10.0f);
+        float x =initTransform.x + Random.Range(-10.0f,10.0f);
         float y =transform.position.y;
-        float z =initTransform.position.z + Random.Range(-10.0f,10.0f);
+        float z =initTransform.z + Random.Range(-10.0f,10.0f);
         randomPosition = new Vector3(x,y,z);
 
         navMeshAgent.SetDestination(randomPosition);
-        anim.SetFloat("Walk",0.4f);
+        anim.SetBool("Walk", true);
         walk =true;
     }
     void AttackEvent()
@@ -137,12 +139,12 @@ public class SkeletonController : MonoBehaviour
         //如果距離大於 XX 不追
         else if (dist > 25)
         {
-            anim.SetFloat("Run", 0);
+            anim.SetBool("Run", false);
         } 
         // 如果距離小於 XX 追擊
         else if (dist < 25 && dist > 3)
         {
-            anim.SetFloat("Run", 0.4f);
+            anim.SetBool("Run", true);
             navMeshAgent.SetDestination(player.transform.position);
         }
         else
@@ -159,20 +161,20 @@ public class SkeletonController : MonoBehaviour
     }
     void RestEvent()
     {
-        float initDist = Vector3.Distance(initTransform.position, transform.position);//計算怪物與原點位置
+        float initDist = Vector3.Distance(initTransform, transform.position);//計算怪物與原點位置
         if(health <=100)
         {
             health += 1;//補滿怪物血量
         }
-        if (initDist <1)
+        if (initDist <3)
         {
-            anim.SetFloat("Walk",0);
+            anim.SetBool("Walk", false);
             skeletonStatus = skeletonStatus.IDLE;
         }
         else
         {
-            anim.SetFloat("Walk",0.4f);
-            navMeshAgent.SetDestination(initTransform.position);
+            anim.SetBool("Walk", true);
+            navMeshAgent.SetDestination(initTransform);
         }
     }
 
@@ -213,6 +215,8 @@ public class SkeletonController : MonoBehaviour
         {
             status = 3;
             anim.SetTrigger("Dead");
+            Debug.Log("Destroy");
+            Invoke("Destroy", 1);
             return;
         }
 
@@ -225,10 +229,14 @@ public class SkeletonController : MonoBehaviour
     void DamageEnd()
     {   
         anim.SetBool("Attack",false);
-        anim.SetFloat("Run",0);
-        Invoke("ResetStatus",1);
+        anim.SetBool("Run", false);
+        Invoke("ResetStatus",3);
     }
 
+    void Destroy()
+    {
+        Destroy(this.gameObject);
+    }
     //reset
     
     void ResetStatus()
