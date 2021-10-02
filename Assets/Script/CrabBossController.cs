@@ -30,6 +30,7 @@ public class CrabBossController : MonoBehaviour
     public int damageMode = 0;
     [Header("怪物待機動畫數量")]
     public int idleMode = 0;
+    int status = 0;
     Animator animator;//怪物動畫
     // Start is called before the first frame update
     void Start()
@@ -97,4 +98,30 @@ public class CrabBossController : MonoBehaviour
         attack = false;
     }
     
+        private void OnTriggerEnter(Collider other) 
+    {
+        if(other.tag == "Attack")
+        {
+            // 觸發受傷事件
+            Damage();
+        }
+
+
+    }  
+        void Damage()
+    {
+        health -= 40;
+        if (health < 0 && status != 3)
+        {
+            status = 3;
+            animator.SetBool("Die",false);
+            Invoke("Destroy", 1);
+            return;
+        }
+        animator.SetTrigger("Damage");
+    }
+        void DamageEnd()
+    {   
+        animator.SetBool("Attack",false);
+    }
 }
