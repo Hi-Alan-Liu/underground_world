@@ -31,6 +31,8 @@ public class CrabBossController : MonoBehaviour
     [Header("怪物待機動畫數量")]
     public int idleMode = 0;
     int status = 0;
+    bool idle = false;
+    bool die = false;
     Animator animator;//怪物動畫
     // Start is called before the first frame update
     void Start()
@@ -46,6 +48,7 @@ public class CrabBossController : MonoBehaviour
         switch (crabBossStauts)
         {
             case crabBossStauts.IDLE:
+                IdleEvent();
                 break;
             case crabBossStauts.WALK:
                 break;
@@ -67,6 +70,39 @@ public class CrabBossController : MonoBehaviour
             Debug.Log("怪物進入攻擊狀態");
             crabBossStauts = crabBossStauts.ATTACK;
         }
+        else if(targetDist >= 25 && crabBossStauts != crabBossStauts.IDLE)
+        {
+            Debug.Log("怪物進入待機狀態");
+            navMeshAgent.SetDestination(transform.position);
+            crabBossStauts = crabBossStauts.IDLE;
+        }
+    }
+    void IdleEvent()
+    {
+        if (idle)
+            return;
+
+        int randomNumber = Random.Range(0, idleMode);
+
+        if (randomNumber !=0)
+        {
+            animator.SetBool("Idle", true);
+            animator.SetInteger("IdleMode",randomNumber);
+            idle = true;
+        }
+        else
+        {
+            crabBossStauts = crabBossStauts.WALK;
+        }
+    }
+    void IdleEnd()
+    {
+        animator.SetBool("Idle", false);
+        idle = false;
+    }
+    void WalkEvet()
+    {
+
     }
     void Attack()
     {
@@ -79,13 +115,15 @@ public class CrabBossController : MonoBehaviour
         {
             animator.SetFloat("Walk", 0);
         }
-        else if (targetDist < 25 && targetDist > 5)
+        else if (targetDist < 25 && targetDist > 3)
         {
             animator.SetFloat("Walk", 1f);
             navMeshAgent.SetDestination(target.transform.position);
         }
         else
         {
+            attack = true;
+            navMeshAgent.SetDestination(transform.position);
             animator.SetFloat("Walk", 0);
             animator.SetBool("Attack",true);
             int randomNumber = Random.Range(1,attackMode);
@@ -98,7 +136,7 @@ public class CrabBossController : MonoBehaviour
         attack = false;
     }
     
-        private void OnTriggerEnter(Collider other) 
+    private void OnTriggerEnter(Collider other) 
     {
         if(other.tag == "Attack")
         {
@@ -108,17 +146,28 @@ public class CrabBossController : MonoBehaviour
 
 
     }  
-        void Damage()
+    void Damage()
     {
-        health -= 40;
-        if (health < 0 && status != 3)
+        if (attack || idle)
         {
-            status = 3;
+        attack= false;
+        idle = false;
+        }
+
+        health -= 40;
+        if (health < 0 && die == false)
+        {
+            die = true;
             animator.SetBool("Die",false);
             Invoke("Destroy", 1);
             return;
         }
-        animator.SetTrigger("Damage");
+        int randomNumber = Random.Range(0, damageMode);
+        if (randomNumber !=0)
+        {
+            animator.SetBool("Damage", true);
+            animator.SetInteger("DamageMode",randomNumber);
+        }
     }
         void DamageEnd()
     {   

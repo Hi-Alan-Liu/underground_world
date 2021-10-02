@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    public GameObject prefab;
+    public GameObject[] prefab = new GameObject[2];
     public int time;
     public bool status;
     [Header("生成怪物位置")]
@@ -36,7 +36,8 @@ public class Spawner : MonoBehaviour
         float y =transform.position.y;
         float z =initTransform.position.z + Random.Range(z_min,z_max);
         Vector3 position = new Vector3(x,y,z);
-        Instantiate(prefab, position, Quaternion.identity);
+        int randomNumber = Random.Range(0,prefab.Length);
+        Instantiate(prefab[randomNumber], position, Quaternion.identity);
         status = true;
         Invoke("Reset",time);
     }

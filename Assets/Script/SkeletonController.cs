@@ -94,7 +94,7 @@ public class SkeletonController : MonoBehaviour
         else if (RandomNumber == 2)
         {
             anim.SetBool ("Idle",true);
-            idle =true;
+            idle = true;
         }
     
     }
@@ -123,7 +123,7 @@ public class SkeletonController : MonoBehaviour
 
         navMeshAgent.SetDestination(randomPosition);
         anim.SetBool("Walk", true);
-        walk =true;
+        walk = true;
     }
     void AttackEvent()
     {
