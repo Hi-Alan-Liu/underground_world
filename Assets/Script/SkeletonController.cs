@@ -216,7 +216,7 @@ public class SkeletonController : MonoBehaviour
             status = 3;
             anim.SetTrigger("Dead");
             Debug.Log("Destroy");
-            Invoke("Destroy", 1);
+            Invoke("Destroy", 3);
             return;
         }
 
@@ -230,7 +230,7 @@ public class SkeletonController : MonoBehaviour
     {   
         anim.SetBool("Attack",false);
         anim.SetBool("Run", false);
-        Invoke("ResetStatus",3);
+        Invoke("ResetStatus",1);
     }
 
     void Destroy()
@@ -241,6 +241,6 @@ public class SkeletonController : MonoBehaviour
     
     void ResetStatus()
     {
-        status = 0;
+        status = 1;
     }
 }

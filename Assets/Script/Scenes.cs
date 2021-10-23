@@ -20,6 +20,10 @@ public class Scenes : MonoBehaviour
     {
         SceneManager.LoadScene("Options");
     }
+        public void GoBack()
+    {
+        SceneManager.LoadScene("FrontPage");
+    }
         public void Exit()
     {
         Application.Quit();

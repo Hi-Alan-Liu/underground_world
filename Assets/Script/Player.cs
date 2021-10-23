@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     // 2: 被攻擊中
     // 3: 角色死亡
     public int status = 0;
+    public bool attacking = false;
 
     //血量與魔力
     public GameObject healthBar;
@@ -29,20 +30,22 @@ public class Player : MonoBehaviour
     public float manamax = 100;
     public GameObject healthText;
     public GameObject manaText;
+    public BoxCollider weapon;
+    public GameObject Torch_01_Variation;
+    public GameObject Torch_02_Variation;
 
 
     // Start is called before the first frame update
     void Start()
     {
         anim = GetComponent<Animator>();
-
-        Debug.Log(Checkd(11));
     }
 
     // Update is called once per frame
     void Update()
     {
         Move ();
+        Attack();
         CheckHealthBar ();
     }
 
@@ -74,26 +77,44 @@ public class Player : MonoBehaviour
         transform.localPosition += velocity * Time.fixedDeltaTime;
         //角色旋轉
         transform.Rotate(0, h * rotateSpeed, 0);
-        
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Fire1"))
+    }
+    void Attack()
+    {
+        if (attacking)
+            return;
+
+        if (Input.GetButtonDown("Fire1"))
         {
-            anim.SetBool("Attack", true);
+            Instantiate(Torch_01_Variation, new Vector3(transform.position.x,transform.position.y+2f,transform.position.z), transform.rotation);
+            anim.SetTrigger("Attack");
+            anim.SetInteger("AttackType",0);
             status = 1;
         }
-    }
 
-    string Checkd(int cs) 
+        if(Input.GetButtonDown("Fire2"))
+        {
+            Instantiate(Torch_02_Variation, new Vector3(transform.position.x,transform.position.y+2f,transform.position.z), transform.rotation);
+            anim.SetTrigger("Attack");
+            anim.SetInteger("AttackType",1);
+            status = 1;
+        }
+        if (status == 1)
+        {
+            weapon.enabled = true;
+        } else
+        {
+            weapon.enabled = false;
+        }
+    }
+    void AttackStart()
     {
-        if (cs> 10)
-        {
-            return "完美";
-        }
-        else
-        {
-            return "不完美";
-        }
+        attacking = true;
     }
-
+    void AttackCombo()
+    {
+        attacking = false;
+        Debug.Log("attacking = false");
+    }
     void AttackEnd()
     {
         anim.SetBool("Attack", false);
@@ -134,6 +155,7 @@ public class Player : MonoBehaviour
     {   
         anim.SetBool("Attack",false);
         anim.SetFloat("Speed",0);
+        attacking = false;
         Debug.Log("玩家僵直結束");
         Invoke("ResetStatus",1);
     }
