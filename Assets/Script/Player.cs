@@ -85,7 +85,6 @@ public class Player : MonoBehaviour
 
         if (Input.GetButtonDown("Fire1"))
         {
-            Instantiate(Torch_01_Variation, new Vector3(transform.position.x,transform.position.y+2f,transform.position.z), transform.rotation);
             anim.SetTrigger("Attack");
             anim.SetInteger("AttackType",0);
             status = 1;
@@ -93,7 +92,6 @@ public class Player : MonoBehaviour
 
         if(Input.GetButtonDown("Fire2"))
         {
-            Instantiate(Torch_02_Variation, new Vector3(transform.position.x,transform.position.y+2f,transform.position.z), transform.rotation);
             anim.SetTrigger("Attack");
             anim.SetInteger("AttackType",1);
             status = 1;
@@ -109,6 +107,9 @@ public class Player : MonoBehaviour
     void AttackStart()
     {
         attacking = true;
+        Debug.Log("攻擊開始:" + anim.GetInteger("AttackType"));
+        GameObject gameObject = anim.GetInteger("AttackType") == 0 ? Torch_01_Variation : Torch_02_Variation;
+        Instantiate(gameObject, new Vector3(transform.position.x,transform.position.y+2f,transform.position.z),transform.rotation);
     }
     void AttackCombo()
     {
