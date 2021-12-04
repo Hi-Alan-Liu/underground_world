@@ -7,14 +7,11 @@ using UnityEngine.UI;
 
 public class Scenes : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public void Level1(GameObject ui)
     {
-        
-    }
-    public void Level1()
-    {
-        SceneManager.LoadScene("NewLevel01");
+        ui.SetActive(true);
+        //todo 顯示載入條
+        Invoke("GameStart",3);
     }
         public void Options()
     {
@@ -28,10 +25,8 @@ public class Scenes : MonoBehaviour
     {
         Application.Quit();
     }
-
-    // Update is called once per frame
-    void Update()
+    public void GameStart()
     {
-        
+        SceneManager.LoadScene("NewLevel01");
     }
 }
