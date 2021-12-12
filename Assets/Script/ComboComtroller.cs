@@ -44,6 +44,6 @@ public class ComboComtroller : MonoBehaviour
         string style = "<color=" + color + "><size=" + size +">";
         comboText.text = "連擊x" + style + comboCount + "</size></color>";
 
-        LeanTween.scale(gameObject, Vector3.zero, 1f).setEase(LeanTweenType.punch);
+        LeanTween.scale(gameObject, Vector3.zero, 0.2f).setEase(LeanTweenType.punch);
     }
 }

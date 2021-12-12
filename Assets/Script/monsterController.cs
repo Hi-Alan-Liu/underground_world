@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-enum crabBossStauts
+enum monsterStauts
 {
     IDLE = 0,//待機
     WALK = 1,//遊走
     ATTACK =2,//追擊目標及攻擊
     RESET =3,//血量回復 走回起點
-    DIE =4,//死亡
+    DAMAGE =4,//死亡
 }
-public class CrabBossController : MonoBehaviour
+public class monsterController : MonoBehaviour
 {
     //怪物狀態
-    crabBossStauts crabBossStauts;
-    float health = 1000;
+    monsterStauts monsterStauts;
+    public float health;
     [Header("最大生命")]
     public float healthMax = 1000;
     [Header("怪物移動速度")]
@@ -33,6 +33,7 @@ public class CrabBossController : MonoBehaviour
     int status = 0;
     bool idle = false;
     bool die = false;
+    bool damege = false;
     Animator animator;//怪物動畫
     // Start is called before the first frame update
     void Start()
@@ -44,37 +45,41 @@ public class CrabBossController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CheckTarget();
-        switch (crabBossStauts)
+        targetDist =Vector3.Distance(target.transform.position,transform.position);
+        if(die || damege)
+            return;
+
+        switch (monsterStauts)
         {
-            case crabBossStauts.IDLE:
+            case monsterStauts.IDLE:
                 IdleEvent();
                 break;
-            case crabBossStauts.WALK:
+            case monsterStauts.WALK:
+                CheckTarget();
                 break;
-            case crabBossStauts.ATTACK:
+            case monsterStauts.ATTACK:
                 Attack();
                 break;
-            case crabBossStauts.RESET:
+            case monsterStauts.RESET:
                 break;
-            case crabBossStauts.DIE:
+            case monsterStauts.DAMAGE:
+                Damage();
                 break;
         }
     }
     void CheckTarget()
     {
         targetDist =Vector3.Distance(target.transform.position,transform.position);
-        Debug.Log(targetDist);
-        if (targetDist < 25 && crabBossStauts != crabBossStauts.ATTACK)
+        if (targetDist < 25 && monsterStauts != monsterStauts.ATTACK)
         {
-            Debug.Log("怪物進入攻擊狀態");
-            crabBossStauts = crabBossStauts.ATTACK;
+            monsterStauts = monsterStauts.ATTACK;
         }
-        else if(targetDist >= 25 && crabBossStauts != crabBossStauts.IDLE)
+        else if(targetDist >= 25 && monsterStauts != monsterStauts.IDLE)
         {
             Debug.Log("怪物進入待機狀態");
+            animator.SetFloat("Walk", 0);
             navMeshAgent.SetDestination(transform.position);
-            crabBossStauts = crabBossStauts.IDLE;
+            monsterStauts = monsterStauts.IDLE;
         }
     }
     void IdleEvent()
@@ -92,7 +97,7 @@ public class CrabBossController : MonoBehaviour
         }
         else
         {
-            crabBossStauts = crabBossStauts.WALK;
+            monsterStauts = monsterStauts.WALK;
         }
     }
     void IdleEnd()
@@ -114,6 +119,9 @@ public class CrabBossController : MonoBehaviour
         if(targetDist > 25)
         {
             animator.SetFloat("Walk", 0);
+            animator.SetBool("Attack",false);
+            attack = false;
+            monsterStauts = monsterStauts.WALK;
         }
         else if (targetDist < 25 && targetDist > 3)
         {
@@ -134,21 +142,22 @@ public class CrabBossController : MonoBehaviour
     {
         animator.SetBool("Attack", false);
         attack = false;
+        monsterStauts = monsterStauts.WALK;
     }
     
     private void OnTriggerEnter(Collider other) 
     {
         if(other.tag == "Attack")
         {
-            // 觸發受傷事件
-            Damage();
+            // 狀態改變受傷
+            monsterStauts = monsterStauts.DAMAGE;
         }
 
 
     }  
     void Damage()
     {
-        if (attack || idle)
+        if (attack || die)
         {
         attack= false;
         idle = false;
@@ -158,19 +167,22 @@ public class CrabBossController : MonoBehaviour
         if (health < 0 && die == false)
         {
             die = true;
-            animator.SetBool("Die",false);
-            Invoke("Destroy", 1);
+            animator.SetTrigger("Die");
+            Invoke("Destroy", 5);
             return;
         }
-        int randomNumber = Random.Range(0, damageMode);
+        int randomNumber = Random.Range(1, damageMode);
         if (randomNumber !=0)
         {
-            animator.SetBool("Damage", true);
+            ComboComtroller._instance.combostart();
+            animator.SetTrigger("Damage");
             animator.SetInteger("DamageMode",randomNumber);
+            damege = true;
         }
     }
         void DamageEnd()
     {   
-        animator.SetBool("Attack",false);
+        damege = false;
+        monsterStauts = monsterStauts.IDLE;
     }
 }
