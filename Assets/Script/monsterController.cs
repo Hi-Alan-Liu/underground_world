@@ -185,4 +185,8 @@ public class monsterController : MonoBehaviour
         damege = false;
         monsterStauts = monsterStauts.IDLE;
     }
+        void Destroy()
+    {
+        Destroy(this.gameObject);
+    }
 }
