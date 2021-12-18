@@ -33,6 +33,10 @@ public class Player : MonoBehaviour
     public BoxCollider weapon;
     public GameObject Torch_01_Variation;
     public GameObject Torch_02_Variation;
+    public Transform cam;
+    public float turnSmoothTime = 0.1f;
+    float turnSmoothVelocity;
+
 
 
     // Start is called before the first frame update
@@ -60,23 +64,42 @@ public class Player : MonoBehaviour
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
-        // Debug.Log("左右數值" + h);
-        // Debug.Log("左右數值" + v);
-        //計算移動位置
-        velocity = new Vector3(0, 0, v);
-        velocity = transform.TransformDirection(velocity);
-        
-        anim.SetFloat("Speed", v);
-        if (v > 0.1)
+        anim.SetFloat("V", v);
+        anim.SetFloat("H", h);
+        if (Input.GetButton("Horizontal") || Input.GetButton("Vertical"))
         {
-            //移動位置乘上速度
+            anim.SetBool("Move", true);
+        } else
+        {
+            anim.SetBool("Move", false);
+        }
+
+        //如果玩家只按前進按鈕時，玩家前進方向跟隨鏡頭
+        if(v > 0.1f && h == 0) {
+            Vector3 direction = new Vector3(h, 0f, v).normalized;
+            //腳色對面攝影機方向轉
+            float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
+            Debug.Log(targetAngle);
+            //腳色旋轉優化
+            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
+            //控制腳色旋轉
+            transform.rotation = Quaternion.Euler(0f, angle, 0f);
+        }
+        //計算移動位置
+        velocity = new Vector3(h, 0, v);
+        velocity = transform.TransformDirection(velocity);
+
+        if (v > 0.1f)
+        {
             velocity *= speed;
+        } else if(v > -0.1f && h != 0f){
+            velocity *= (speed * 0.7f);
         }
 
         //把計算好的位置加到角色
         transform.localPosition += velocity * Time.fixedDeltaTime;
         //角色旋轉
-        transform.Rotate(0, h * rotateSpeed, 0);
+        //transform.Rotate(0, h * rotateSpeed, 0);
     }
     void Attack()
     {
