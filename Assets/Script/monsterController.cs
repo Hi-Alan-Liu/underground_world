@@ -17,7 +17,7 @@ public class monsterController : MonoBehaviour
     monsterStauts monsterStauts;
     public float health;
     [Header("最大生命")]
-    public float healthMax = 1000;
+    public float healthMax;
     [Header("怪物移動速度")]
     public float speed = 10;
     NavMeshAgent navMeshAgent;//AI導航
@@ -116,14 +116,14 @@ public class monsterController : MonoBehaviour
             return;
         }
 
-        if(targetDist > 25)
+        if(targetDist > 24)
         {
             animator.SetFloat("Walk", 0);
             animator.SetBool("Attack",false);
             attack = false;
             monsterStauts = monsterStauts.WALK;
         }
-        else if (targetDist < 25 && targetDist > 3)
+        else if (targetDist < 24 && targetDist > 3)
         {
             animator.SetFloat("Walk", 1f);
             navMeshAgent.SetDestination(target.transform.position);
