@@ -20,6 +20,8 @@ public class monsterController : MonoBehaviour
     public float healthMax;
     [Header("怪物移動速度")]
     public float speed = 10;
+    [Header("怪物攻擊範圍")]
+    public float attackDist;
     NavMeshAgent navMeshAgent;//AI導航
     public GameObject target;
     float targetDist;
@@ -116,14 +118,14 @@ public class monsterController : MonoBehaviour
             return;
         }
 
-        if(targetDist > 24)
+        if(targetDist > 25)
         {
             animator.SetFloat("Walk", 0);
             animator.SetBool("Attack",false);
             attack = false;
             monsterStauts = monsterStauts.WALK;
         }
-        else if (targetDist < 24 && targetDist > 3)
+        else if (targetDist < 25 && targetDist > attackDist)
         {
             animator.SetFloat("Walk", 1f);
             navMeshAgent.SetDestination(target.transform.position);
@@ -143,6 +145,7 @@ public class monsterController : MonoBehaviour
         animator.SetBool("Attack", false);
         attack = false;
         monsterStauts = monsterStauts.WALK;
+        Debug.Log("攻擊結束");
     }
     
     private void OnTriggerEnter(Collider other) 
@@ -184,6 +187,7 @@ public class monsterController : MonoBehaviour
     {   
         damege = false;
         monsterStauts = monsterStauts.IDLE;
+        Debug.Log("受擊結束");
     }
         void Destroy()
     {
