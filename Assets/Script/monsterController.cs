@@ -132,6 +132,10 @@ public class monsterController : MonoBehaviour
         }
         else
         {
+            Vector3 targetPos = target.transform.position;
+            targetPos.y =transform.position.y;
+            transform.LookAt(targetPos);
+
             attack = true;
             navMeshAgent.SetDestination(transform.position);
             animator.SetFloat("Walk", 0);
