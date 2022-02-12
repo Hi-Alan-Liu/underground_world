@@ -192,7 +192,6 @@ public class monsterController : MonoBehaviour
     {   
         damege = false;
         monsterStauts = monsterStauts.IDLE;
-        Debug.Log("受擊結束");
     }
         void Destroy()
     {

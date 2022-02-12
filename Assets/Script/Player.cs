@@ -36,12 +36,17 @@ public class Player : MonoBehaviour
     public Transform cam;
     public float turnSmoothTime = 0.1f;
     float turnSmoothVelocity;
+    public List<GameObject> enemyList;//場景內的怪物
+    public GameObject nearstEnemy;//跟隨最近的怪物
+    public float nearstEnemyDistance;
+    GameObject targetEnemy;//目標的怪物
 
 
 
     // Start is called before the first frame update
     void Start()
     {
+        FindScenceEnemy();
         anim = GetComponent<Animator>();
     }
 
@@ -51,6 +56,7 @@ public class Player : MonoBehaviour
         Move ();
         Attack();
         CheckHealthBar ();
+        FindNearstEnemy();
     }
 
     void Move ()
@@ -79,7 +85,6 @@ public class Player : MonoBehaviour
             Vector3 direction = new Vector3(h, 0f, v).normalized;
             //腳色對面攝影機方向轉
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
-            Debug.Log(targetAngle);
             //腳色旋轉優化
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
             //控制腳色旋轉
@@ -108,6 +113,12 @@ public class Player : MonoBehaviour
 
         if (Input.GetButtonDown("Fire1"))
         {
+            if (nearstEnemy!=null)
+            {
+                Vector3 targetPos = nearstEnemy.transform.position;
+                targetPos.y = transform.position.y;
+                transform.LookAt(targetPos);
+            }
             anim.SetTrigger("Attack");
             anim.SetInteger("AttackType",0);
             status = 1;
@@ -137,7 +148,6 @@ public class Player : MonoBehaviour
     void AttackCombo()
     {
         attacking = false;
-        Debug.Log("attacking = false");
     }
     void AttackEnd()
     {
@@ -188,5 +198,46 @@ public class Player : MonoBehaviour
     {
         status = 0;
     }
+/// <summary>
+/// 找到所有敵人
+/// </summary>
+    void FindScenceEnemy()
+    {
+        enemyList.Clear();
+        GameObject[] enemyArray = GameObject.FindGameObjectsWithTag("Enemy");
+        for (int i=0; i < enemyArray.Length; i++)
+        {
+            // TODO 判斷是否為真的怪物
+            enemyList.Add(enemyArray[i]);
+        }
+    }
+/// <summary>
+/// 尋找最近的敵人
+/// </summary>
+    void FindNearstEnemy()
+    {
+        nearstEnemy = null;
 
+        if(enemyList != null)
+        {
+            for (int i =0; i < enemyList.Count; i++)
+            {
+                float enemyDistance = Vector3.Distance(this.transform.position, enemyList[i].transform.position);
+                if (enemyDistance < nearstEnemyDistance)
+                {
+                    nearstEnemy = enemyList[i];
+                }
+            }
+        }
+
+        if(nearstEnemy != null)
+        {
+            float enemyDistance = Vector3.Distance(this.transform.position, nearstEnemy.transform.position);
+            if(enemyDistance > nearstEnemyDistance)
+            {
+                nearstEnemy = null;
+            }
+
+        }
+    }
 }
