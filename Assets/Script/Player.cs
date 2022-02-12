@@ -92,8 +92,8 @@ public class Player : MonoBehaviour
         if (v > 0.1f)
         {
             velocity *= speed;
-        } else if(v > -0.1f && h != 0f){
-            velocity *= (speed * 0.7f);
+        } else if(v > -0.5f && h != 0f){
+            velocity *= (speed * 1f);
         }
 
         //把計算好的位置加到角色

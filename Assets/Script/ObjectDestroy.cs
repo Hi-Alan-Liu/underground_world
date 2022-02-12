@@ -22,7 +22,7 @@ public class ObjectDestroy : MonoBehaviour
         if(other.tag == "Attack")
         {
             Debug.Log("撞門");
-            Invoke("Destroy", 5);
+            Invoke("Destroy", 2);
         }
     }
     void Destroy()

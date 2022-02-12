@@ -22,6 +22,7 @@ public class monsterController : MonoBehaviour
     public float speed = 10;
     [Header("怪物攻擊範圍")]
     public float attackDist;
+    public float attackingDist;
     NavMeshAgent navMeshAgent;//AI導航
     public GameObject target;
     float targetDist;
@@ -118,14 +119,14 @@ public class monsterController : MonoBehaviour
             return;
         }
 
-        if(targetDist > 25)
+        if(targetDist > attackDist)
         {
             animator.SetFloat("Walk", 0);
             animator.SetBool("Attack",false);
             attack = false;
             monsterStauts = monsterStauts.WALK;
         }
-        else if (targetDist < 25 && targetDist > attackDist)
+        else if (targetDist < attackDist && targetDist > attackingDist)
         {
             animator.SetFloat("Walk", 1f);
             navMeshAgent.SetDestination(target.transform.position);
