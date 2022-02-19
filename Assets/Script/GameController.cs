@@ -5,66 +5,41 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
-    public GameObject image;
-    public Text marquee;
+    public GameObject panel;
+    public Text panelText;
     public string[] text;
-    public string currentText;
-    public int textSpeed;
-    int currentTextCount = 0;
-    float timer_f;
-    int timer_i ;
-    int current_timer;
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
+    public float textspeed;
+    public int currentTextcount = 0;
+    bool textFinished = true;
 
-    // Update is called once per frame
+
     void Update()
     {
-        if(currentTextCount <= text.Length - 1)
+        if(Input.GetKeyDown(KeyCode.Z) && textFinished == true)
         {
-            if (timer_i < text[currentTextCount].Length)
+            if (currentTextcount == text.Length)
             {
-                timer_f += Time.deltaTime * textSpeed;
-                timer_i = (int)timer_f;
+                panel.SetActive(false);
+                currentTextcount = 0;
+                return;
             }
-        }
-
-        AddText();
-        buttonDown();
-    }
-    
-    void AddText()
-    {
-        if (current_timer != timer_i)
-        {
-            currentText += text[currentTextCount][timer_i - 1];
-            marquee.text = currentText;
-
-            current_timer = timer_i;
+            StartCoroutine(SetTextUI());
         }
     }
 
-    void buttonDown()
+    IEnumerator SetTextUI()
     {
-        if (current_timer == text[currentTextCount].Length)
+        textFinished = false;
+        panelText.text = "";
+
+        for (int i = 0; i < text[currentTextcount].Length; i++)
         {
-            if(currentTextCount <= text.Length - 1)
-            {
-                if (Input.GetButtonDown("Fire1"))
-                {
-                    Debug.Log("KeyCode.Space");
-                    timer_f = 0;
-                    timer_i = 0;
-                    current_timer = 0;
-                    currentText = null;
-                    if(currentTextCount <= text.Length - 1)
-                    {
-                        currentTextCount++;
-                    }
-                }
-            }
+            panelText.text += text[currentTextcount][i];
+
+            yield return new WaitForSeconds(textspeed);
         }
+
+        textFinished = true;
+        currentTextcount++;
     }
 }
