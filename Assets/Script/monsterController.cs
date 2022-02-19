@@ -79,7 +79,6 @@ public class monsterController : MonoBehaviour
         }
         else if(targetDist >= 25 && monsterStauts != monsterStauts.IDLE)
         {
-            Debug.Log("怪物進入待機狀態");
             animator.SetFloat("Walk", 0);
             navMeshAgent.SetDestination(transform.position);
             monsterStauts = monsterStauts.IDLE;
@@ -176,6 +175,7 @@ public class monsterController : MonoBehaviour
         {
             die = true;
             animator.SetTrigger("Die");
+            Player._instance.FindScenceEnemy();
             Invoke("Destroy", 5);
             return;
         }
@@ -188,12 +188,12 @@ public class monsterController : MonoBehaviour
             damege = true;
         }
     }
-        void DamageEnd()
+    void DamageEnd()
     {   
         damege = false;
         monsterStauts = monsterStauts.IDLE;
     }
-        void Destroy()
+    void Destroy()
     {
         Destroy(this.gameObject);
     }

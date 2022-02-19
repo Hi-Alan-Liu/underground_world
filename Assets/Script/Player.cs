@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    public static Player _instance;
     ///宣告變數
     public float speed = 5;//角色移動速度
     public float rotateSpeed = 5;
@@ -18,6 +19,7 @@ public class Player : MonoBehaviour
     // 1: 攻擊狀態
     // 2: 被攻擊中
     // 3: 角色死亡
+    // 4: 角色翻滾
     public int status = 0;
     public bool attacking = false;
 
@@ -54,11 +56,29 @@ public class Player : MonoBehaviour
     void Update()
     {
         Move ();
+        Roll();
         Attack();
         CheckHealthBar ();
         FindNearstEnemy();
     }
+    void Roll()
+    {
+        if(status != 0)
+        {
+            return;
+        }
 
+        if(Input.GetButtonDown("Jump"))
+        {
+            anim.SetBool("Roll", true);
+            status = 4;
+        }
+    }
+    void RollEnd()
+    {
+        anim.SetBool("Roll", false);
+        status = 0;
+    }
     void Move ()
     {
 
@@ -201,7 +221,7 @@ public class Player : MonoBehaviour
 /// <summary>
 /// 找到所有敵人
 /// </summary>
-    void FindScenceEnemy()
+    public void FindScenceEnemy()
     {
         enemyList.Clear();
         GameObject[] enemyArray = GameObject.FindGameObjectsWithTag("Enemy");
@@ -217,7 +237,6 @@ public class Player : MonoBehaviour
     void FindNearstEnemy()
     {
         nearstEnemy = null;
-
         if(enemyList != null)
         {
             for (int i =0; i < enemyList.Count; i++)
