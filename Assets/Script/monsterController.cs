@@ -25,7 +25,7 @@ public class monsterController : MonoBehaviour
     public float attackingDist;
     NavMeshAgent navMeshAgent;//AI導航
     public GameObject target;
-    float targetDist;
+    public float targetDist;
     bool attack = false;
     [Header("怪物攻擊動畫數量")]
     public int attackMode =0;
