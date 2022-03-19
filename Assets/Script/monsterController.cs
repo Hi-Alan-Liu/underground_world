@@ -149,9 +149,9 @@ public class monsterController : MonoBehaviour
     }
     void AttackMagic()
     {
-        Instantiate(attackMagic);
         attackMagic.transform.position = magictransform.transform.position;
         attackMagic.transform.rotation = magictransform.transform.rotation;
+        Instantiate(attackMagic);
     }
     void AttackEnd()
     {

@@ -48,6 +48,8 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;//鎖定滑鼠
+
         FindScenceEnemy();
         anim = GetComponent<Animator>();
     }
