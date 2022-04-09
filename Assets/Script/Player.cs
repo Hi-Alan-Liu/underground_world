@@ -50,8 +50,26 @@ public class Player : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;//鎖定滑鼠
 
-        FindScenceEnemy();
         anim = GetComponent<Animator>();
+        //開啓敵人偵測協程
+        StartCoroutine("EnemyDetector");
+    }
+
+    /// <summary>
+    /// 開啓敵人偵測協程
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator EnemyDetector()
+    {
+        while (true)
+        {
+            yield return null;
+            //找到場景中所有活着的敵人
+            FindScenceEnemy();
+            //定位最近的敵人
+            FindNearestEnemy();
+            
+        }
     }
 
     // Update is called once per frame
@@ -61,8 +79,8 @@ public class Player : MonoBehaviour
         Roll();
         Attack();
         CheckHealthBar ();
-        FindNearstEnemy();
     }
+
     void Roll()
     {
         if(status != 0)
@@ -220,9 +238,9 @@ public class Player : MonoBehaviour
     {
         status = 0;
     }
-/// <summary>
-/// 找到所有敵人
-/// </summary>
+    /// <summary>
+    /// 找到所有敵人
+    /// </summary>
     public void FindScenceEnemy()
     {
         enemyList.Clear();
@@ -233,10 +251,10 @@ public class Player : MonoBehaviour
             enemyList.Add(enemyArray[i]);
         }
     }
-/// <summary>
-/// 尋找最近的敵人
-/// </summary>
-    void FindNearstEnemy()
+    /// <summary>
+    /// 尋找最近的敵人
+    /// </summary>
+    void FindNearestEnemy()
     {
         nearstEnemy = null;
         if(enemyList != null)
