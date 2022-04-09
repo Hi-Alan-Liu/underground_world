@@ -187,6 +187,13 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 0.46313378
+        functionName: AttackMagic
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -225,6 +232,13 @@ ModelImporter:
         messageOptions: 0
       - time: 1
         functionName: AttackEnd
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.5230415
+        functionName: AttackMagic
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

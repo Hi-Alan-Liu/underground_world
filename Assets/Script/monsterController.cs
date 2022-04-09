@@ -38,9 +38,10 @@ public class monsterController : MonoBehaviour
     bool die = false;
     bool damege = false;
     Animator animator;//怪物動畫
-    [Header("魔法攻擊物件")]
+    [Header("魔法攻擊的物件")]
     public GameObject attackMagic;
-    public Transform magictransform;
+
+    public Transform magicTransform;
     // Start is called before the first frame update
     void Start()
     {
@@ -146,13 +147,16 @@ public class monsterController : MonoBehaviour
             int randomNumber = Random.Range(1,attackMode);
             animator.SetInteger("AttackMode",randomNumber);
         }
-    }
+    }  
+
     void AttackMagic()
     {
-        attackMagic.transform.position = magictransform.transform.position;
-        attackMagic.transform.rotation = magictransform.transform.rotation;
         Instantiate(attackMagic);
-    }
+        attackMagic.transform.position = magicTransform.transform.position;
+        attackMagic.transform.rotation = magicTransform.transform.rotation;
+    } 
+
+
     void AttackEnd()
     {
         animator.SetBool("Attack", false);
