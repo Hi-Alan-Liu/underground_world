@@ -1502,7 +1502,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1233897719}
   - component: {fileID: 1233897718}
-  - component: {fileID: 1233897717}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -1510,14 +1509,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1233897717
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1233897716}
-  m_Enabled: 1
 --- !u!20 &1233897718
 Camera:
   m_ObjectHideFlags: 0
@@ -1785,7 +1776,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1763933365}
-        m_MethodName: SelectPlayer
+        m_MethodName: GameStart
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1946,8 +1937,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93d946ac31e36844b95891d7f5f88265, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  option: {fileID: 1031293347}
-  selectPlayer: {fileID: 974560164}
+  option: {fileID: 49107479}
+  selectPlayer: {fileID: 49107479}
   loading: {fileID: 49107479}
   progeressBar: {fileID: 1815168281}
 --- !u!1 &1786502132
@@ -2376,7 +2367,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1968325712}
   - component: {fileID: 1968325711}
-  - component: {fileID: 1968325710}
   m_Layer: 0
   m_Name: Camera (1)
   m_TagString: Untagged
@@ -2384,14 +2374,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1968325710
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1968325709}
-  m_Enabled: 1
 --- !u!20 &1968325711
 Camera:
   m_ObjectHideFlags: 0
