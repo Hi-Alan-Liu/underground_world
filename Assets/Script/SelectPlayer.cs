@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class SelectPlayer : MonoBehaviour
 {
-    public GameObject panel_1;
+    public GameObject sicklePanel;
 
-    public GameObject panel_2;
+    public GameObject swordPanel;
+
+    public Animator sickleAnime;
+
+    public Animator swordAnime;
 
     // Start is called before the first frame update
     void Start()
@@ -23,18 +27,20 @@ public class SelectPlayer : MonoBehaviour
     public void PointerEnter(int id)
     {
         if (id == 1) {
-            panel_1.SetActive(false);
+            sicklePanel.SetActive(false);
+            sickleAnime.SetTrigger("Attack");
         } else {
-            panel_2.SetActive(false);
+            swordPanel.SetActive(false);
+            swordAnime.SetTrigger("Attack");
         }
     }
 
     public void PointerExit(int id)
     {
         if (id == 1) {
-            panel_1.SetActive(true);
+            sicklePanel.SetActive(true);
         } else {
-            panel_2.SetActive(true);
+            swordPanel.SetActive(true);
         }
     }
 
