@@ -47,6 +47,11 @@ public class Scenes : MonoBehaviour
         option.SetActive(true);
         selectPlayer.SetActive(false);
     }
+
+    public void BackFrontPage()
+    {
+        SceneManager.LoadScene("FrontPage");
+    }
     public void Exit()
     {
         Application.Quit();

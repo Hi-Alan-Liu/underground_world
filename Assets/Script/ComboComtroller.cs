@@ -7,6 +7,7 @@ public class ComboComtroller : MonoBehaviour
 {
     public static ComboComtroller _instance;
     public Text comboText;
+    public GameObject comboimage;
     public float comboTime = 2;
     private int comboCount = 0;
     public float timer = 0;
