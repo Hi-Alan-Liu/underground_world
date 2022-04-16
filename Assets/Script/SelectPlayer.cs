@@ -28,10 +28,12 @@ public class SelectPlayer : MonoBehaviour
     {
         if (id == 1) {
             sicklePanel.SetActive(false);
-            sickleAnime.SetTrigger("Attack");
+            sickleAnime.SetBool("Attack", true);
+            sickleAnime.SetInteger("AttackType", 1);
         } else {
             swordPanel.SetActive(false);
-            swordAnime.SetTrigger("Attack");
+            swordAnime.SetBool("Attack", true);
+            sickleAnime.SetInteger("AttackType", 0);
         }
     }
 
@@ -39,8 +41,10 @@ public class SelectPlayer : MonoBehaviour
     {
         if (id == 1) {
             sicklePanel.SetActive(true);
+            sickleAnime.SetBool("Attack", false);
         } else {
             swordPanel.SetActive(true);
+            swordAnime.SetBool("Attack", false);
         }
     }
 
