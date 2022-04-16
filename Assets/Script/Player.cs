@@ -41,6 +41,7 @@ public class Player : MonoBehaviour
     public GameObject nearstEnemy;//跟隨最近的怪物
     public float nearstEnemyDistance;
     GameObject targetEnemy;//目標的怪物
+    public GameController gameController;
 
 
 
@@ -78,6 +79,15 @@ public class Player : MonoBehaviour
         Roll();
         Attack();
         CheckHealthBar ();
+        GameFinish();
+    }
+
+    void GameFinish()
+    {
+        if(enemyList.Count == 0)
+        {
+            gameController.gameFinish = true;
+        }
     }
 
     void Roll()

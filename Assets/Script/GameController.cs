@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour
 {
     public GameObject panel;
@@ -11,6 +11,12 @@ public class GameController : MonoBehaviour
     public float textspeed;
     public int currentTextcount = 0;
     bool textFinished = true;
+
+    public bool gameFinish = false;
+    public GameObject finishPanel;
+    public Text finishTime;
+    public Text finishScore;
+
 
     // void Awake()
     // {
@@ -32,6 +38,16 @@ public class GameController : MonoBehaviour
                 return;
             }
             StartCoroutine(SetTextUI());
+        }
+
+        // if(Input.GetKeyDown(KeyCode.P))
+        //     {
+        //         SceneManager.LoadScene("FrontPage");
+        //     }
+        if (gameFinish && Time.time > 5)
+        {
+            finishPanel.SetActive(true);
+            finishTime.text = "遊戲時間:" + Mathf.Round(Time.time) + "秒";
         }
     }
 
