@@ -13,6 +13,7 @@ public class Scenes : MonoBehaviour
     public Transform progeressBar;
     float time= 0 ;
     bool is_loading = false;
+    int player_code;
     public void Update()
     {
         ProgeressBar();
@@ -29,11 +30,12 @@ public class Scenes : MonoBehaviour
         selectPlayer.SetActive(true);
     }
 
-    public void Loading (int player_code)
+    public void Loading (int code)
     {
         selectPlayer.SetActive(false);
         loading.SetActive(true);
         is_loading = true;
+        player_code = code;
         Invoke("GameStart",3);
     }
 
@@ -59,7 +61,13 @@ public class Scenes : MonoBehaviour
 
     public void GameStart()
     {
-        SceneManager.LoadScene("NewLevel01");
+        if (player_code == 1)
+        {
+            SceneManager.LoadScene("NewLevel01");
+            //SceneVal.ins.ToNewScene("NewLeveL01", Player_code.ToString());
+        }else{
+            SceneManager.LoadScene("NewLevel02");
+        }
     }
 
     public void ProgeressBar()

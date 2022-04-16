@@ -12,6 +12,14 @@ public class GameController : MonoBehaviour
     public int currentTextcount = 0;
     bool textFinished = true;
 
+    // void Awake()
+    // {
+    //     if (SceneVal.ins.ReadSceneData() != null)
+    //     {
+    //         string data = SceneVal.ins.ReadSceneData();
+    //         Debug.Log(data);
+    //     }
+    // }
 
     void Update()
     {

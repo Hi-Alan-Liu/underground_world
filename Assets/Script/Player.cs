@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    public static Player _instance;
     ///宣告變數
     public float speed = 5;//角色移動速度
     public float rotateSpeed = 5;

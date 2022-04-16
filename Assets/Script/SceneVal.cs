@@ -28,7 +28,7 @@ public class SceneVal : MonoBehaviour
         sceneData = null;
         return tempData;
     }
-    public void TonewScene(string sceneName, string data = null)
+    public void ToNewScene(string sceneName, string data = null)
     {
         this.WriteSceneData(data);
 

@@ -188,7 +188,6 @@ public class monsterController : MonoBehaviour
         {
             die = true;
             animator.SetTrigger("Die");
-            Player._instance.FindScenceEnemy();
             Invoke("Destroy", 5);
             return;
         }
