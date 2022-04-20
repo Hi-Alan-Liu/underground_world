@@ -1,7 +1,8 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 enum monsterStauts
 {
@@ -40,7 +41,7 @@ public class monsterController : MonoBehaviour
     Animator animator;//怪物動畫
     [Header("魔法攻擊的物件")]
     public GameObject attackMagic;
-
+    public Text finishScore;
     public Transform magicTransform;
     // Start is called before the first frame update
     void Start()
@@ -189,6 +190,7 @@ public class monsterController : MonoBehaviour
             die = true;
             animator.SetTrigger("Die");
             Invoke("Destroy", 5);
+            finishScore.text = "遊戲分數:"+ 200;
             return;
         }
         int randomNumber = Random.Range(1, damageMode);

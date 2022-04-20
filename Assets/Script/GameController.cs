@@ -15,7 +15,6 @@ public class GameController : MonoBehaviour
     public bool gameFinish = false;
     public GameObject finishPanel;
     public Text finishTime;
-    public Text finishScore;
 
 
     // void Awake()
@@ -40,11 +39,11 @@ public class GameController : MonoBehaviour
             StartCoroutine(SetTextUI());
         }
 
-        // if(Input.GetKeyDown(KeyCode.P))
-        //     {
-        //         SceneManager.LoadScene("FrontPage");
-        //     }
-        if (gameFinish && Time.time > 5)
+        if(Input.GetKeyDown(KeyCode.P))
+            {
+                SceneManager.LoadScene("FrontPage");
+            }
+        if (gameFinish)
         {
             finishPanel.SetActive(true);
             finishTime.text = "遊戲時間:" + Mathf.Round(Time.time) + "秒";
