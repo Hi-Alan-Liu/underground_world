@@ -15,6 +15,8 @@ public class GameController : MonoBehaviour
     public bool gameFinish = false;
     public GameObject finishPanel;
     public Text finishTime;
+    public Text finishScore;
+    public int score = 0;
 
 
     // void Awake()
@@ -47,6 +49,7 @@ public class GameController : MonoBehaviour
         {
             finishPanel.SetActive(true);
             finishTime.text = "遊戲時間:" + Mathf.Round(Time.time) + "秒";
+            finishScore.text = "遊戲分數:" + score;
         }
     }
 
