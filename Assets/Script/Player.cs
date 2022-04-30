@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -42,6 +43,7 @@ public class Player : MonoBehaviour
     public float nearstEnemyDistance;
     GameObject targetEnemy;//目標的怪物
     public GameController gameController;
+    public GameObject gameoverPanel;
 
 
 
@@ -80,6 +82,10 @@ public class Player : MonoBehaviour
         Attack();
         CheckHealthBar ();
         GameFinish();
+        if(Input.GetKeyDown(KeyCode.P))
+            {
+                SceneManager.LoadScene("FrontPage");
+            }
     }
 
     void GameFinish()
@@ -222,10 +228,15 @@ public class Player : MonoBehaviour
         {
             status = 3;
             anim.SetTrigger("Dead");
+            Invoke("Gameover" , 7);
             return;
         }
 
         anim.SetTrigger("Damage");
+    }
+    void Gameover()
+    {
+        gameoverPanel.SetActive(true);
     }
 
     void CheckHealthBar()

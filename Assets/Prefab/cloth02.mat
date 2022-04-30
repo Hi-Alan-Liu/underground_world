@@ -65,7 +65,7 @@ Material:
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 0
-    - _OcclusionStrength: 1
+    - _OcclusionStrength: 0.153
     - _Parallax: 0.018
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -74,4 +74,4 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 0.509434, g: 0.42318806, b: 0.20906019, a: 1}
-    - _EmissionColor: {r: 0.1792453, g: 0.1792453, b: 0.1792453, a: 1}
+    - _EmissionColor: {r: 0.3490566, g: 0.2749644, b: 0.2749644, a: 1}
