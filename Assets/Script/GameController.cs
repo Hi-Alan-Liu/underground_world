@@ -45,7 +45,7 @@ public class GameController : MonoBehaviour
             {
                 SceneManager.LoadScene("FrontPage");
             }
-        if (gameFinish)
+        if (gameFinish && !finishPanel.activeSelf)
         {
             finishPanel.SetActive(true);
             finishTime.text = "遊戲時間:" + Mathf.Round(Time.time) + "秒";

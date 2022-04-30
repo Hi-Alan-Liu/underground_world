@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -70,27 +70,27 @@ public class Player : MonoBehaviour
             FindScenceEnemy();
             //定位最近的敵人
             FindNearestEnemy();
-            
+
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        Move ();
+        Move();
         Roll();
         Attack();
-        CheckHealthBar ();
+        CheckHealthBar();
         GameFinish();
-        if(Input.GetKeyDown(KeyCode.P))
-            {
-                SceneManager.LoadScene("FrontPage");
-            }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            SceneManager.LoadScene("FrontPage");
+        }
     }
 
     void GameFinish()
     {
-        if(enemyList.Count == 0)
+        if (enemyList.Count == 0)
         {
             gameController.gameFinish = true;
         }
@@ -98,12 +98,12 @@ public class Player : MonoBehaviour
 
     void Roll()
     {
-        if(status != 0)
+        if (status != 0)
         {
             return;
         }
 
-        if(Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump"))
         {
             anim.SetBool("Roll", true);
             status = 4;
@@ -114,10 +114,10 @@ public class Player : MonoBehaviour
         anim.SetBool("Roll", false);
         status = 0;
     }
-    void Move ()
+    void Move()
     {
 
-        if (status != 0) 
+        if (status != 0)
         {
             return;
         }
@@ -130,13 +130,15 @@ public class Player : MonoBehaviour
         if (Input.GetButton("Horizontal") || Input.GetButton("Vertical"))
         {
             anim.SetBool("Move", true);
-        } else
+        }
+        else
         {
             anim.SetBool("Move", false);
         }
 
         //如果玩家只按前進按鈕時，玩家前進方向跟隨鏡頭
-        if(v > 0.1f && h == 0) {
+        if (v > 0.1f && h == 0)
+        {
             Vector3 direction = new Vector3(h, 0f, v).normalized;
             //腳色對面攝影機方向轉
             float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + cam.eulerAngles.y;
@@ -152,7 +154,9 @@ public class Player : MonoBehaviour
         if (v > 0.1f)
         {
             velocity *= speed;
-        } else if(v > -0.5f && h != 0f){
+        }
+        else if (v > -0.5f && h != 0f)
+        {
             velocity *= (speed * 1f);
         }
 
@@ -168,27 +172,28 @@ public class Player : MonoBehaviour
 
         if (Input.GetButtonDown("Fire1"))
         {
-            if (nearstEnemy!=null)
+            if (nearstEnemy != null)
             {
                 Vector3 targetPos = nearstEnemy.transform.position;
                 targetPos.y = transform.position.y;
                 transform.LookAt(targetPos);
             }
             anim.SetTrigger("Attack");
-            anim.SetInteger("AttackType",0);
+            anim.SetInteger("AttackType", 0);
             status = 1;
         }
 
-        if(Input.GetButtonDown("Fire2"))
+        if (Input.GetButtonDown("Fire2"))
         {
             anim.SetTrigger("Attack");
-            anim.SetInteger("AttackType",1);
+            anim.SetInteger("AttackType", 1);
             status = 1;
         }
         if (status == 1)
         {
             weapon.enabled = true;
-        } else
+        }
+        else
         {
             weapon.enabled = false;
         }
@@ -198,7 +203,7 @@ public class Player : MonoBehaviour
         attacking = true;
         Debug.Log("攻擊開始:" + anim.GetInteger("AttackType"));
         GameObject gameObject = anim.GetInteger("AttackType") == 0 ? Torch_01_Variation : Torch_02_Variation;
-        Instantiate(gameObject, new Vector3(transform.position.x,transform.position.y+2f,transform.position.z),transform.rotation);
+        Instantiate(gameObject, new Vector3(transform.position.x, transform.position.y + 2f, transform.position.z), transform.rotation);
     }
     void AttackCombo()
     {
@@ -210,9 +215,9 @@ public class Player : MonoBehaviour
         status = 0;
     }
 
-    private void OnTriggerEnter(Collider other) 
+    private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Attack01")
+        if (other.tag == "Attack01")
         {
             Damage();
         }
@@ -220,15 +225,15 @@ public class Player : MonoBehaviour
 
     void Damage()
     {
-        if(status == 2 || status == 3)
+        if (status == 2 || status == 3)
             return;
 
         health -= 10;
-        if (health <= 0 && status != 3) 
+        if (health <= 0 && status != 3)
         {
             status = 3;
             anim.SetTrigger("Dead");
-            Invoke("Gameover" , 7);
+            Invoke("Gameover", 7);
             return;
         }
 
@@ -242,16 +247,16 @@ public class Player : MonoBehaviour
     void CheckHealthBar()
     {
         healthText.GetComponent<Text>().text = health + "/" + healthmax;
-        healthBar.GetComponent<Transform>().localPosition = new Vector3( - 175 + ((175 / healthmax)* health), 0f, 0f);
+        healthBar.GetComponent<Transform>().localPosition = new Vector3(-175 + ((175 / healthmax) * health), 0f, 0f);
 
     }
     void DeadEnd()
-    {   
-        anim.SetBool("Attack",false);
-        anim.SetFloat("Speed",0);
+    {
+        anim.SetBool("Attack", false);
+        anim.SetFloat("Speed", 0);
         attacking = false;
         Debug.Log("玩家僵直結束");
-        Invoke("ResetStatus",1);
+        Invoke("ResetStatus", 1);
     }
 
     void ResetStatus()
@@ -265,7 +270,7 @@ public class Player : MonoBehaviour
     {
         enemyList.Clear();
         GameObject[] enemyArray = GameObject.FindGameObjectsWithTag("Enemy");
-        for (int i=0; i < enemyArray.Length; i++)
+        for (int i = 0; i < enemyArray.Length; i++)
         {
             // TODO 判斷是否為真的怪物
             enemyList.Add(enemyArray[i]);
@@ -277,9 +282,9 @@ public class Player : MonoBehaviour
     void FindNearestEnemy()
     {
         nearstEnemy = null;
-        if(enemyList != null)
+        if (enemyList != null)
         {
-            for (int i =0; i < enemyList.Count; i++)
+            for (int i = 0; i < enemyList.Count; i++)
             {
                 float enemyDistance = Vector3.Distance(this.transform.position, enemyList[i].transform.position);
                 if (enemyDistance < nearstEnemyDistance)
@@ -289,10 +294,10 @@ public class Player : MonoBehaviour
             }
         }
 
-        if(nearstEnemy != null)
+        if (nearstEnemy != null)
         {
             float enemyDistance = Vector3.Distance(this.transform.position, nearstEnemy.transform.position);
-            if(enemyDistance > nearstEnemyDistance)
+            if (enemyDistance > nearstEnemyDistance)
             {
                 nearstEnemy = null;
             }

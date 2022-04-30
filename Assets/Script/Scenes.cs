@@ -14,6 +14,10 @@ public class Scenes : MonoBehaviour
     float time= 0 ;
     bool is_loading = false;
     int player_code;
+    void Start()
+    {
+        Cursor.lockState = CursorLockMode.None;
+    }
     public void Update()
     {
         ProgeressBar();
