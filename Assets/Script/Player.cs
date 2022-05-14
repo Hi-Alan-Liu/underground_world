@@ -25,13 +25,13 @@ public class Player : MonoBehaviour
 
     //血量與魔力
     public GameObject healthBar;
-    public GameObject manaBar;
+    // public GameObject manaBar;
     public float health = 100;
-    public float mana = 100;
+    // public float mana = 100;
     public float healthmax = 100;
-    public float manamax = 100;
+    // public float manamax = 100;
     public GameObject healthText;
-    public GameObject manaText;
+    // public GameObject manaText;
     public BoxCollider weapon;
     public GameObject Torch_01_Variation;
     public GameObject Torch_02_Variation;
